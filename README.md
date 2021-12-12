@@ -1,5 +1,5 @@
 ## fft-from-scratch
-This is a Python implementation of Fast Fourier Transform (FFT) and some of its applications:
+This is a Python implementation of Fast Fourier Transform (FFT) in 1d and 2d from scratch and some of its applications:
 * Photo restoration (paper texture pattern removal)
 * convolution (with speed comparison with the direct matrix multiplication method and ground truth using `scipy.signal.convolve`)
 
