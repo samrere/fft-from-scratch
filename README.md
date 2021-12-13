@@ -5,9 +5,9 @@ This is a Python implementation of Fast Fourier Transform (FFT) in 1d and 2d fro
 
 ### Photo restoration
 The honeycomb pattern on old photos is due to the "silk finish" paper texture, which was used a lot back in the day. We can remove them in frequency domain using fft.
-before             |  after
-:-------------------------:|:-------------------------:
-![](https://github.com/samrere/fft-from-scratch/blob/main/images/old.jpg)  |  ![](https://github.com/samrere/fft-from-scratch/blob/main/images/new.jpg)
+<p align="center">
+  <img src="https://github.com/samrere/fft-from-scratch/blob/main/images/animation.gif" width="600">
+</p>
 
 ### [*Convolution*](https://nbviewer.org/github/samrere/fft-from-scratch/blob/main/convlution_comparison.ipynb)
 achieves O(nlogn) complexity, whereas direct matrix multiplication approach is O(n^2). It is more efficient when n is large.
