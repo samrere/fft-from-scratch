@@ -4,10 +4,11 @@ This is a Python implementation of Fast Fourier Transform (FFT) in 1d and 2d fro
 * convolution (with speed comparison with the direct matrix multiplication method and ground truth using `scipy.signal.convolve`)
 
 ### Photo restoration
-<p align="center">
-  <img src="https://github.com/samrere/fft-from-scratch/blob/main/images/animation.gif" width="600">
-</p>
+The honeycomb pattern on old photos is due to the "silk finish" paper texture, which was used a lot back in the day. We can remove them in frequency domain using fft.
+before             |  after
+:-------------------------:|:-------------------------:
+![](https://github.com/samrere/fft-from-scratch/blob/main/images/old.jpg)  |  ![](https://github.com/samrere/fft-from-scratch/blob/main/images/new.jpg)
 
-### Convolution
+### [*Convolution*](https://nbviewer.org/github/samrere/fft-from-scratch/blob/main/convlution_comparison.ipynb)
 achieves O(nlogn) complexity, whereas direct matrix multiplication approach is O(n^2). It is more efficient when n is large.
 	 
