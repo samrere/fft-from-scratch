@@ -1,9 +1,10 @@
 import numpy as np
 
-DFT16=np.exp(-2j*np.pi*np.arange(16)*np.arange(16)[:,None]/16)
+# DFT16=np.fromfunction(lambda x,y:np.exp(-2j*np.pi*x*y/16),shape=(16,16))
+DFT16=np.exp(-2j*np.pi*np.arange(16)*np.arange(16)[:,None]/16) # faster
 FACTOR={N: np.exp(-2j*np.pi*np.arange(N/2)/ N) for N in np.array([1024//32,1024//16,1024//8,1024//4,1024//2,
                                                                   1024,
-                                                                  1024*2,1024*4,1024*8,1024*16,1024*32])}
+                                                                  1024*2,1024*4,1024*8,1024*16,1024*32,1024*64,1024*128])}
 def _dft(a,axis,forward):
     f=np.moveaxis(a,axis,-1)[...,None]
     N=f.shape[-2]
