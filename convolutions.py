@@ -3,19 +3,16 @@ from fft import *
 # direct matrix multiplication method
 def convolve_direct(img,kernel,mode='full'):
     assert mode in {'full','same','valid'}, NotImplemented
-    kernel=np.flipud(np.fliplr(kernel))
+    kernel=np.flip(kernel,(-1,-2))
     return cross_correlation(img,kernel,mode)
 
 def cross_correlation(img, kernel,mode):
     '''
-    img: C*H*W, where C is channel (3 for rgb image, 1 for grayscale);
-                  H and W are image height and width respectively.
+    img shape must be N,Cin,H,W: batch size, input channel, height and width
+    kernel shape should be N,Cout,Hk,Wk: batch, output channel, height and width
     '''
-    if img.ndim==2:
-        img=img[None,...]
-
-    kernel_size = kernel.shape
-    h_k, w_k = kernel.shape  # kernel height and width
+    assert mode in {'full','same','valid'}, NotImplemented
+    h_k, w_k = kernel.shape[-2:]  # kernel height and width
     if mode == 'full':
         padding = (h_k - 1, w_k - 1)
         pad_width = [[0, 0] for _ in range(img.ndim)]
@@ -33,29 +30,33 @@ def cross_correlation(img, kernel,mode):
         padding = (0,0)
         padded=img
 
-    C, H_in, W_in = img.shape  # batch size, rgb channel, Height, Width
-    H_out = np.floor(H_in + 2 * padding[0] - kernel_size[0] + 1).astype(int)
-    W_out = np.floor(W_in + 2 * padding[1] - kernel_size[1] + 1).astype(int)
+    N, C, H_in, W_in = img.shape  # batch size, rgb channel, Height, Width
+    H_out = np.floor(H_in + 2 * padding[0] - h_k + 1).astype(int)
+    W_out = np.floor(W_in + 2 * padding[1] - w_k + 1).astype(int)
 
     expanded = np.lib.stride_tricks.as_strided(
         padded,
         shape=(
-            H_out,  # out channel height
-            W_out,  # out channel width
+            N,                 # batch
+            H_out,             # out channel height
+            W_out,             # out channel width
+            kernel.shape[0],   # out channel
             padded.shape[-3],  # input channel
             kernel.shape[-2],  # kernel height
             kernel.shape[-1],  # kernel width
         ),
         strides=(
+            padded.strides[0],   # batch
             padded.strides[-2],  # H dimension
             padded.strides[-1],  # W dimension
-            padded.strides[-3],  # input chennel
+            0,                   # output channel
+            padded.strides[-3],  # input channel
             padded.strides[-2],  # kernel height
             padded.strides[-1],  # kernel width
         ),
         writeable=False,
     )
-    feature_map = np.ascontiguousarray(np.moveaxis(np.einsum('...ij,...ij->...', expanded, kernel), -1, -3))
+    feature_map = np.ascontiguousarray(np.moveaxis(np.einsum('...ijk,...ijk->...', expanded, kernel), -1, -3))
     return feature_map
 
 # fft convolution
