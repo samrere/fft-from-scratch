@@ -1,7 +1,7 @@
 ## fft-from-scratch
 This is a Python implementation of Fast Fourier Transform (FFT) in 1d and 2d from scratch and some of its applications in:
 * Photo restoration (paper texture pattern removal)
-* convolution (direct fft and overlap add fft method, including a comparison with the direct matrix multiplication method and ground truth using `scipy.signal.convolve`)
+* convolution (direct fft and overlap add fft method, including a comparison with the direct matrix multiplication method and ground truth using `scipy.signal.convolve`. It also includes a speed and accuracy comparison with `torch.nn.Conv2d`)
 * large integer multiplication.
 
 ### [*Photo restoration*](https://nbviewer.org/github/samrere/fft-from-scratch/blob/main/pattern_removal.ipynb)
